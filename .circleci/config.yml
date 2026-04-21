@@ -82,8 +82,7 @@ references:
                TARGET_DIR="$HOME/.zcs-deps/zimbra/$MODULE"
                # ===============================
 
-               echo "Preparing jar for publishing: $VERSION"
-
+               echo "Preparing the existing JAR for upload (version: $VERSION)"
                cd "$BUILD_DIR"
 
                ORIGINAL_JAR=$(find . -type f -name "$JAR_PATTERN" | head -n 1)
@@ -94,7 +93,7 @@ references:
                FINAL_JAR="${MODULE}-${VERSION}.jar"
                mv "$ORIGINAL_JAR" "$TARGET_DIR/$FINAL_JAR"
 
-               echo "Jar prepared: $TARGET_DIR/$FINAL_JAR"
+               echo "Using previously built JAR located at: $TARGET_DIR/$FINAL_JAR"
 
                export MODULE_LIST="$MODULE"
 
@@ -165,4 +164,4 @@ workflows:
             filters:
                branches:
                  only:
-                   - ZCS-18832
+                   - develop
