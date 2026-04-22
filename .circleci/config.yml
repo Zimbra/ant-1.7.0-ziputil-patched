@@ -74,15 +74,21 @@ references:
             command: |
                set -e
                sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl
-               # ===== configurable values =====
+
+               cd ../ant-1.7.0-ziputil-patched
+
+               # Build artifact version:
+               GIT_TIMESTAMP=$(git log -1 --pretty=format:%at)
+               ARTIFACT_VERSION=$(echo "$BUILD_RELEASE_NO" | cut -d'_' -f1)
+               VERSION="${ARTIFACT_VERSION}.${GIT_TIMESTAMP}"
+
                MODULE="ant-ziputil"
-               BUILD_DIR="../ant-1.7.0-ziputil-patched/build"
+               BUILD_DIR="build"
                JAR_PATTERN="ant-*.jar"
-               VERSION="${BUILD_RELEASE_NO}_${CIRCLE_BUILD_NUM}"
                TARGET_DIR="$HOME/.zcs-deps/zimbra/$MODULE"
-               # ===============================
 
                echo "Preparing the existing JAR for upload (version: $VERSION)"
+
                cd "$BUILD_DIR"
 
                ORIGINAL_JAR=$(find . -type f -name "$JAR_PATTERN" | head -n 1)
@@ -164,4 +170,4 @@ workflows:
             filters:
                branches:
                  only:
-                   - develop
+                   - ZCS-18832
